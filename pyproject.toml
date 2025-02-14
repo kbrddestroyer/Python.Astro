@@ -1,0 +1,29 @@
+[project]
+name = "Astro"
+version = "1.0.0"
+readme = "README.md"
+
+requires-python = ">=3.10"
+dependencies = [
+    "setuptools",
+    "pygame",
+    "pytest",
+    "importlib",
+]
+
+[build-system]
+requires = ["poetry-core", "poetry", "setuptools"]
+
+[project.optional-dependencies]
+formatting = [
+    "pylint",
+    "black"
+]
+
+[tool.pytest.ini_options]
+pythonpath = [".", "src"]
+testpaths = ["tests"]
+
+[tool.poetry]
+package-mode = false
+readme = "README.md"
