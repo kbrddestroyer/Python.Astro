@@ -50,10 +50,6 @@ class Kinetic(AstroObject):
         self.currentForce = Vector(0, 0)
         self._universe.register(self)
 
-    def __del__(self):
-        if self._universe:
-            self._universe.unregister(self)
-
     @override
     def tick(self, delta_time : float):
         a = self.currentForce / self.mass

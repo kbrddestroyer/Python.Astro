@@ -20,6 +20,8 @@ class Simulation:
     g_instance = None
 
     def __init__(self):
+        self.__running = True
+
         self._manager = Manager(Config())
         self._universe = Universe()
 
@@ -27,11 +29,16 @@ class Simulation:
     def manager(self):
         return self._manager
 
+    def finalize(self):
+        self.__running = False
+        del self._universe
+        del self._manager
+
     def start(self, preinit : Callable = None):
         if preinit:
             preinit()
 
-        while True:
+        while self.__running:
             self.tick(0.01)
             self._manager.update()
 

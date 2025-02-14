@@ -12,6 +12,7 @@ import typing
 from dataclasses import dataclass
 
 import pygame
+import simulation
 from utils.utility import Singleton
 
 
@@ -62,7 +63,8 @@ class Manager(object):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
-                sys.exit()
+                simulation.Simulation().finalize()
+                return
 
         self.__screen.fill(self.__config.fill)
         self.__render()
