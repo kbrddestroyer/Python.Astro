@@ -42,3 +42,11 @@ class Vector(object):
     @property
     def normalized(self):
         return Vector(self.x / self.magnitude, self.y / self.magnitude)
+
+    def rotate(self, radian):
+        x = self.x * math.cos(radian) - self.y * math.sin(radian)
+        y = self.x * math.sin(radian) + self.y * math.cos(radian)
+
+        self.x = x
+        self.y = y
+        return self

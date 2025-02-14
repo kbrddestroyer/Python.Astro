@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import typing
-import weakref
 
 from utils.utility import Singleton
 from graphics.manager import Manager, Config
@@ -39,7 +38,7 @@ class Simulation:
             preinit()
 
         while self.__running:
-            self.tick(0.01)
+            self.tick(0.1)
             self._manager.update()
 
     def tick(self, delta_time : float = 0):

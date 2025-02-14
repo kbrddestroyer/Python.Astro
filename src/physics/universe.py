@@ -43,7 +43,7 @@ class Universe:
         self.__collapse_kinetics(k1, k2)
 
     def __collapse_kinetics(self, k1: Kinetic, k2 : Kinetic):
-        k1.currentForce = Vector.vector_sum(k1.currentForce, k2.currentForce)
+        k1.apply_force(Vector.vector_sum(k1.force, k2.force))
         dist = universe_utils.distance(k1, k2)
 
         position = k1.position + (k1.position - k2.position) / (k1.radius + k2.radius)
@@ -69,6 +69,7 @@ class Universe:
         self.__remove_queue.clear()
 
         for kinetic in self.__registry:
+            kinetic.precalculate_leapfrog(delta_time)
             for other in self.__registry:
                 if other is kinetic:
                     continue
@@ -76,8 +77,8 @@ class Universe:
                 vec = universe_utils.calculate_vector(kinetic.position, other.position)
                 f = universe_utils.calculate_newtonian(kinetic, other)
 
-                kinetic.currentForce = Vector.vector_sum(kinetic.currentForce, vec * f)
-
+                kinetic.apply_force(Vector.vector_sum(kinetic.force, vec.normalized * f))
                 self.try_collapse(kinetic, other)
-            kinetic.tick(delta_time)
 
+            kinetic.calculate_leapfrog(delta_time)
+            kinetic.tick(delta_time)

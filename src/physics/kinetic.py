@@ -30,6 +30,10 @@ class AstroObject(Object):
     def position(self):
         return Vector(*self.center)
 
+    @position.setter
+    def position(self, value : Vector):
+        self.center = (value.x, value.y)
+
     @override
     def tick(self, delta_time : float):
         pass
@@ -90,19 +94,46 @@ class Kinetic(AstroObject):
         super(Kinetic, self).__init__(*args)
         self._universe = Universe()
         self.mass = mass
-        self.currentForce = Vector(0, 0)
-        self._universe.register(self)
 
-        self.trace = Trace(5000, self.center)
+        self.current_acceleration = Vector(0, 0)
+        self.current_velocity = Vector(0, 0)
+
+        self._universe.register(self)
+        self.trace = Trace(500, self.center)
 
     def onDestroy(self):
         Manager().unregister(self.trace)
         Manager().unregister(self)
 
+    @property
+    def acceleration(self):
+        return self.current_acceleration
+
+    @property
+    def force(self):
+        return self.current_acceleration * self.mass
+
+    def apply_force(self, force : Vector):
+        self.current_acceleration = force / self.mass
+
+    def apply_acceleration(self, acceleration : Vector):
+        self.current_acceleration = acceleration
+
+    def apply_velocity(self, velocity : Vector):
+        self.current_velocity = velocity
+
+    def accelerate(self, acceleration : Vector):
+        self.current_acceleration += acceleration
+
+    def precalculate_leapfrog(self, delta_time : float):
+        self.current_velocity += self.current_acceleration * 0.5 * delta_time
+        self.position = self.position + self.current_velocity * delta_time
+
+    def calculate_leapfrog(self, delta_time : float):
+        self.current_velocity += self.current_acceleration * delta_time
+
     @override
     def tick(self, delta_time : float):
-        a = self.currentForce / self.mass
-        r = (a * (delta_time ** 2)) / 2
-        desired = (r.x + self.center[0], r.y + self.center[1])
-        self.center = desired
         self.trace.position = self.center
+
+        self.current_acceleration = Vector(0, 0)

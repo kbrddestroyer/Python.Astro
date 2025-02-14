@@ -7,7 +7,6 @@ Implemented features:
 
 from __future__ import annotations
 
-import sys
 import typing
 from dataclasses import dataclass
 
@@ -23,7 +22,7 @@ if typing.TYPE_CHECKING:
 
 @dataclass
 class Config:
-    wnd_size : Tuple[int, int] = (640, 480)
+    wnd_size : Tuple[int, int] = (1000, 1000)
     fill : Color = (10, 10, 10)
 
 
