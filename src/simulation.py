@@ -38,7 +38,7 @@ class Simulation:
             init()
 
         while self.__running:
-            self.tick(0.1)
+            self.tick(1)
             self._manager.update()
 
     def tick(self, delta_time : float = 0):
