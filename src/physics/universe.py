@@ -30,7 +30,7 @@ class Universe:
         if kinetic in self.__remove_queue:
             return
         self.__remove_queue.append(kinetic)
-        Manager().unregister(kinetic)
+        kinetic.onDestroy()
 
     def try_collapse(self, k1 : Kinetic, k2 : Kinetic):
         dist = universe_utils.distance(k1, k2)
@@ -44,6 +44,10 @@ class Universe:
 
     def __collapse_kinetics(self, k1: Kinetic, k2 : Kinetic):
         k1.currentForce = Vector.vector_sum(k1.currentForce, k2.currentForce)
+        dist = universe_utils.distance(k1, k2)
+
+        position = k1.position + (k1.position - k2.position) / (k1.radius + k2.radius)
+        k1.center = (position.x, position.y)
 
         k1.radius = math.sqrt(k1.radius ** 2 + k2.radius ** 2)
         k1.mass += k2.mass

@@ -21,7 +21,11 @@ class Vector(object):
     def __add__(self, other):
         if isinstance(other, Vector):
             return Vector(self.x + other.x, self.y + other.y)
-        
+
+    def __sub__(self, other):
+        if isinstance(other, Vector):
+            return Vector(self.x - other.x, self.y - other.y)
+
     @staticmethod
     def vector_sum(v1 : Vector, v2 : Vector):
         if v1.magnitude > 0 and v2.magnitude > 0:

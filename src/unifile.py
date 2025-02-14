@@ -1,4 +1,3 @@
-import physics
 from physics import kinetic
 
 
