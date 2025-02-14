@@ -7,7 +7,6 @@ import typing
 from utils.vector import Vector
 
 if typing.TYPE_CHECKING:
-    from utils.vector import Vector
     from physics.kinetic import Kinetic
 
 

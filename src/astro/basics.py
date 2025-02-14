@@ -1,9 +1,4 @@
-from __future__ import annotations
-
-import typing
-import weakref
 from abc import abstractmethod
-
 from graphics.manager import Manager
 
 
@@ -14,8 +9,8 @@ class Object:
 
     @abstractmethod
     def tick(self, delta_time : float):
-        raise NotImplemented
+        raise NotImplementedError
 
     @abstractmethod
     def render(self):
-        raise NotImplemented
+        raise NotImplementedError

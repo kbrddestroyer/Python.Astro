@@ -8,7 +8,7 @@ Implemented features:
 from __future__ import annotations
 
 import typing
-from dataclasses import dataclass
+from enum import EnumType
 
 import pygame
 import simulation
@@ -20,19 +20,16 @@ if typing.TYPE_CHECKING:
     from pygame import Color
 
 
-@dataclass
-class Config:
-    wnd_size : Tuple[int, int] = (1000, 1000)
-    fill : Color = (10, 10, 10)
+class Config(EnumType):
+    WND_SIZE : Tuple[int, int]  = (1000, 1000)
+    FILL_COLOR : Color          = (10, 10, 10)
 
 
 @Singleton
-class Manager(object):
-    def __init__(self, config):
-        self.__config = config
-
+class Manager:
+    def __init__(self):
         pygame.init()
-        self.__screen = pygame.display.set_mode(config.wnd_size)
+        self.__screen = pygame.display.set_mode(Config.WND_SIZE)
 
         self.__render_queue = []
         self.__remove_queue = []
@@ -65,6 +62,6 @@ class Manager(object):
                 simulation.Simulation().finalize()
                 return
 
-        self.__screen.fill(self.__config.fill)
+        self.__screen.fill(Config.FILL_COLOR)
         self.__render()
         pygame.display.flip()

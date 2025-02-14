@@ -9,6 +9,7 @@ dependencies = [
     "pygame",
     "pytest",
     "importlib",
+    "pylint"
 ]
 
 [build-system]
@@ -19,6 +20,13 @@ formatting = [
     "pylint",
     "black"
 ]
+
+[tool.pylint]
+init-hook = "import sys; sys.path.append('.')"
+disable = ["C0114", "C0115", "C0116"]
+max-line-length = 121
+ignore = ["dist", "build", "__pycache__"]
+ignored-modules = ["pygame"]
 
 [tool.pytest.ini_options]
 pythonpath = [".", "src", "src"]

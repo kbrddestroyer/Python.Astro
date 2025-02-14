@@ -1,13 +1,9 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-
-import pygame
-import typing
-
+from typing import override
 from copy import copy
 
-from typing import override
+import pygame
 
 from simulation import Simulation
 from graphics.manager import Manager
@@ -19,7 +15,7 @@ from .universe import Universe
 
 class AstroObject(Object):
     def __init__(self, *args):
-        super(AstroObject, self).__init__()
+        super().__init__()
         self.simulation = Simulation()
         self.color, self.center, self.radius, self.width = args
 
@@ -51,7 +47,7 @@ class AstroObject(Object):
 
 class Trace(Object):
     def __init__(self, length, start_position):
-        super(Trace, self).__init__()
+        super().__init__()
 
         self.__simulation = Simulation()
         self.__trace = []
@@ -76,22 +72,22 @@ class Trace(Object):
 
     @override
     def render(self):
-        for posID in range(1, len(self.__trace)):
-            start = self.__trace[posID]
-            end = self.__trace[posID - 1]
+        for pos_id in range(1, len(self.__trace)):
+            start = self.__trace[pos_id]
+            end = self.__trace[pos_id - 1]
 
             pygame.draw.line(
                 self.__simulation.manager.screen,
                 (
-                125 - int((len(self.__trace) - posID) / len(self.__trace) * 125),
-                125 - int((len(self.__trace) - posID) / len(self.__trace) * 125),
-                125 - int((len(self.__trace) - posID) / len(self.__trace) * 125)
+                125 - int((len(self.__trace) - pos_id) / len(self.__trace) * 125),
+                125 - int((len(self.__trace) - pos_id) / len(self.__trace) * 125),
+                125 - int((len(self.__trace) - pos_id) / len(self.__trace) * 125)
             ), start, end, 2)
 
 
 class Kinetic(AstroObject):
     def __init__(self, mass, *args):
-        super(Kinetic, self).__init__(*args)
+        super().__init__(*args)
         self._universe = Universe()
         self.mass = mass
 
@@ -101,7 +97,7 @@ class Kinetic(AstroObject):
         self._universe.register(self)
         self.trace = Trace(500, self.center)
 
-    def onDestroy(self):
+    def on_destroy(self):
         Manager().unregister(self.trace)
         Manager().unregister(self)
 

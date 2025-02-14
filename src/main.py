@@ -1,9 +1,6 @@
 from simulation import Simulation
-
-
-def preinit():
-    import unifile
+import unifile
 
 
 if __name__ == '__main__':
-    Simulation().start(preinit)
+    Simulation().start(unifile.initialize)

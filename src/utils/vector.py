@@ -1,10 +1,9 @@
 from __future__ import annotations
 
 import math
-import typing
 
 
-class Vector(object):
+class Vector:
     def __init__(self, x, y):
         self.x = x
         self.y = y
@@ -21,10 +20,12 @@ class Vector(object):
     def __add__(self, other):
         if isinstance(other, Vector):
             return Vector(self.x + other.x, self.y + other.y)
+        raise NotImplementedError
 
     def __sub__(self, other):
         if isinstance(other, Vector):
             return Vector(self.x - other.x, self.y - other.y)
+        raise NotImplementedError
 
     @staticmethod
     def vector_sum(v1 : Vector, v2 : Vector):
@@ -32,8 +33,8 @@ class Vector(object):
             cosines = (v1.x * v2.x + v1.y * v2.y) / (v1.magnitude * v2.magnitude)
             force = math.sqrt(v1.magnitude ** 2 + v2.magnitude ** 2 + 2 * v1.magnitude * v2.magnitude * cosines)
             return (v1 + v2).normalized * force
-        else:
-            return v1 + v2
+
+        return v1 + v2
 
     @property
     def magnitude(self):

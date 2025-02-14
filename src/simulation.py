@@ -3,7 +3,7 @@ from __future__ import annotations
 import typing
 
 from utils.utility import Singleton
-from graphics.manager import Manager, Config
+from graphics.manager import Manager
 from physics.universe import Universe
 
 if typing.TYPE_CHECKING:
@@ -21,7 +21,7 @@ class Simulation:
     def __init__(self):
         self.__running = True
 
-        self._manager = Manager(Config())
+        self._manager = Manager()
         self._universe = Universe()
 
     @property
@@ -33,9 +33,9 @@ class Simulation:
         del self._universe
         del self._manager
 
-    def start(self, preinit : Callable = None):
-        if preinit:
-            preinit()
+    def start(self, init : Callable = None):
+        if init:
+            init()
 
         while self.__running:
             self.tick(0.1)
