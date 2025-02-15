@@ -11,7 +11,7 @@ if typing.TYPE_CHECKING:
     from typing import Callable
 
 TIME_UNIT   = 1.0e5 / (UNIT_SIZE / 1.0e7)
-TIME_DELTA  = TIME_UNIT
+TIME_DELTA  = TIME_UNIT * 2
 
 
 @Singleton

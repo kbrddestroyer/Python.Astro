@@ -30,9 +30,13 @@ class Manager:
     def __init__(self):
         pygame.init()
         self.__screen = pygame.display.set_mode(Config.WND_SIZE)
+        pygame.display.set_caption("Astro Simulation")
 
         self.__render_queue = []
         self.__remove_queue = []
+
+    def set_caption(self, cap : str):
+        pygame.display.set_caption(cap)
 
     def register(self, obj):
         if obj not in self.__render_queue:

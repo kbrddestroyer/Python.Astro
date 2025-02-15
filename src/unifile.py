@@ -8,6 +8,8 @@ from utils.vector import Vector
 
 
 def initialize():
+    kinetic.AsteroidSpawner()
+
     sun_r = astro_to_gui_distance(6.96e5)
     sun = kinetic.Kinetic(1.989e30, (255, 255, 255), (500, 500), sun_r * 1000, 0)
 
