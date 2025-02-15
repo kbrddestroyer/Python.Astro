@@ -10,6 +10,9 @@ if typing.TYPE_CHECKING:
     from typing import Callable
 
 
+TICK_DT = 0.1
+
+
 @Singleton
 class Simulation:
     """
@@ -38,7 +41,7 @@ class Simulation:
             init()
 
         while self.__running:
-            self.tick(1)
+            self.tick(TICK_DT)
             self._manager.update()
 
     def tick(self, delta_time : float = 0):

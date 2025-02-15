@@ -27,11 +27,11 @@ def initialize():
             moon = kinetic.Kinetic(4.96e-11, (255, 255, 255), m_pos, 1, 0)
             moon.apply_velocity(generate_moon(moon, planet, sun))
 
-    create_planetary_system((900, 300), 3)
+    create_planetary_system((900, 300), 1)
 
     planet = kinetic.Kinetic(1.6, (255, 255, 255), (400, 500), 3, 1)
     planet.apply_velocity(universe_utils.generate_v1(planet, sun))
 
 
-    planet = kinetic.Kinetic(2.6, (255, 255, 255), (700, 20), 10, 1)
+    planet = kinetic.Kinetic(2.6, (255, 255, 255), (10, 200), 10, 1)
     planet.apply_velocity(universe_utils.generate_v1(planet, sun))
