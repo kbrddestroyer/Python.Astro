@@ -10,7 +10,8 @@ if typing.TYPE_CHECKING:
     from physics.kinetic import Kinetic
 
 
-G_CONST = 6.6743
+G_CONST     = 6.6743e-11  # Newtonian gravity constant
+UNIT_SIZE   = 3.0e8       # Unit to meter
 
 
 def generate_v1(k1 : Kinetic, k2 : Kinetic) -> Vector:
@@ -20,13 +21,24 @@ def generate_v1(k1 : Kinetic, k2 : Kinetic) -> Vector:
     return vec * vel
 
 
-def distance(k1 : Kinetic, k2 : Kinetic) -> float:
+def generate_moon_v1(moon : Kinetic, planet : Kinetic, sun : Kinetic):
+    return generate_v1(moon, sun) + generate_v1(moon, planet)
+
+
+def gui_distance(k1 : Kinetic, k2 : Kinetic):
     return math.sqrt((k1.position.x - k2.position.x) ** 2 + (k1.position.y - k2.position.y) ** 2)
 
 
+def distance(k1 : Kinetic, k2 : Kinetic) -> float:
+    return gui_distance(k1, k2) * UNIT_SIZE
+
+
+def astro_to_gui_distance(astro_dist : float) -> float:
+    return astro_dist / UNIT_SIZE
+
+
 def calculate_newtonian(k1 : Kinetic, k2 : Kinetic) -> float:
-    dist = distance(k1, k2)
-    return G_CONST * k1.mass * k2.mass / (dist ** 2)
+    return G_CONST * k1.mass * k2.mass / (distance(k1, k2) ** 2)
 
 
 def calculate_vector(source : Vector, dest : Vector) -> Vector:

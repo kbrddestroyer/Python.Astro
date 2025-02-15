@@ -21,7 +21,7 @@ if typing.TYPE_CHECKING:
 
 
 class Config(EnumType):
-    WND_SIZE : Tuple[int, int]  = (1000, 1000)
+    WND_SIZE : Tuple[int, int]  = (1640, 1080)
     FILL_COLOR : Color          = (10, 10, 10)
 
 

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import override
+from typing import override, Tuple
 from copy import copy
 
 import pygame
@@ -10,6 +10,7 @@ from graphics.manager import Manager
 from astro.basics import Object
 from utils.vector import Vector
 
+from .universe_utils import UNIT_SIZE, astro_to_gui_distance
 from .universe import Universe
 
 
@@ -97,6 +98,9 @@ class Kinetic(AstroObject):
         self._universe.register(self)
         self.trace = Trace(500, self.center)
 
+    def astro_to_gui_pos(self) -> Tuple[int, int]:
+        return self.astro_pos.normalized * astro_to_gui_distance(self.astro_pos.magnitude)
+
     def on_destroy(self):
         Manager().unregister(self.trace)
         Manager().unregister(self)
@@ -123,7 +127,7 @@ class Kinetic(AstroObject):
 
     def precalculate_leapfrog(self, delta_time : float):
         self.current_velocity += self.current_acceleration * 0.5 * delta_time
-        self.position = self.position + self.current_velocity * delta_time
+        self.position = self.position + (self.current_velocity * delta_time) / UNIT_SIZE
 
     def calculate_leapfrog(self, delta_time : float):
         self.current_velocity += self.current_acceleration * delta_time

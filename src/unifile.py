@@ -3,35 +3,18 @@ from venv import create
 
 from physics import kinetic
 from physics import universe_utils
+from physics.universe_utils import astro_to_gui_distance
+from utils.vector import Vector
 
 
 def initialize():
-    sun = kinetic.Kinetic(100, (255, 255, 255), (500, 500), 10, 0)
+    sun_r = astro_to_gui_distance(6.96e5)
+    sun = kinetic.Kinetic(1.989e30, (255, 255, 255), (500, 500), sun_r * 1000, 0)
 
-    def create_planetary_system(pos, moons):
-        planet = kinetic.Kinetic(1.6, (255, 255, 255), pos, 5, 1)
+    earth_pos = Vector(500, 500).normalized * universe_utils.astro_to_gui_distance(1.49597e11)
 
-        def generate_moon(moon, p, s):
-            vel1 = universe_utils.generate_v1(moon, p)
-            vel2 = universe_utils.generate_v1(moon, s)
-            return vel1 + vel2
+    earth = kinetic.Kinetic(5.97e24, (255, 255, 255), (earth_pos.x, earth_pos.y), 2, 1)
+    earth.apply_velocity(universe_utils.generate_v1(earth, sun))
 
-        planet.apply_velocity(universe_utils.generate_v1(planet, sun))
-
-        for _ in range(moons):
-            m_pos = (
-                pos[0] + random.randint(0, 30),
-                pos[1] + random.randint(0, 30)
-            )
-
-            moon = kinetic.Kinetic(4.96e-11, (255, 255, 255), m_pos, 1, 0)
-            moon.apply_velocity(generate_moon(moon, planet, sun))
-
-    create_planetary_system((900, 300), 1)
-
-    planet = kinetic.Kinetic(1.6, (255, 255, 255), (400, 500), 3, 1)
-    planet.apply_velocity(universe_utils.generate_v1(planet, sun))
-
-
-    planet = kinetic.Kinetic(2.6, (255, 255, 255), (10, 200), 10, 1)
-    planet.apply_velocity(universe_utils.generate_v1(planet, sun))
+    moon = kinetic.Kinetic(7.36e2, (255, 255, 255), (earth_pos.x, earth_pos.y - 5), 1, 1)
+    moon.apply_velocity(universe_utils.generate_moon_v1(moon, earth, sun))

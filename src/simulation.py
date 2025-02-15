@@ -5,12 +5,13 @@ import typing
 from utils.utility import Singleton
 from graphics.manager import Manager
 from physics.universe import Universe
+from physics.universe_utils import UNIT_SIZE
 
 if typing.TYPE_CHECKING:
     from typing import Callable
 
-
-TICK_DT = 0.1
+TIME_UNIT   = 1.0e5 / (UNIT_SIZE / 1.0e7)
+TIME_DELTA  = TIME_UNIT
 
 
 @Singleton
@@ -41,7 +42,7 @@ class Simulation:
             init()
 
         while self.__running:
-            self.tick(TICK_DT)
+            self.tick(TIME_DELTA)
             self._manager.update()
 
     def tick(self, delta_time : float = 0):

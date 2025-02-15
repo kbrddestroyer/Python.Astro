@@ -33,7 +33,7 @@ class Universe:
         kinetic.on_destroy()
 
     def try_collapse(self, k1 : Kinetic, k2 : Kinetic):
-        dist = universe_utils.distance(k1, k2)
+        dist = universe_utils.gui_distance(k1, k2)
         if (k1.radius + k2.radius) < dist:
             return
 
