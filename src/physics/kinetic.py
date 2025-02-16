@@ -46,7 +46,7 @@ class ImpactEvent(AstroObject):
     @override
     def tick(self, delta_time : float):
         self.ticks += 1
-        self.radius = (self.ticks ** 0.7)
+        self.radius = self.ticks ** 0.7
         if self.for_ticks < self.ticks:
             universe.Universe().unregister(self)
             Manager().unregister(self)
@@ -126,7 +126,6 @@ class Trace(Object):
         self.__trace = []
         self.__length = length
         self.__position = copy(start_position)
-        self.__ticks = 0
 
     @property
     def position(self):
@@ -134,9 +133,6 @@ class Trace(Object):
 
     @position.setter
     def position(self, position):
-        self.__ticks += 1
-        self.__ticks = 0
-
         if len(self.__trace) >= self.__length:
             self.__trace.pop(0)
 
@@ -250,7 +246,7 @@ class Asteroid(Kinetic):
     DENSITY = 2.6
 
     @staticmethod
-    def radius(mass):
+    def generate_radius(mass):
         return ( 3 * Asteroid.DENSITY * mass / 4 * math.pi ) ** ( 1 / 3 )
 
     @staticmethod
@@ -261,7 +257,7 @@ class Asteroid(Kinetic):
         mass = self.generate(self.MASS)
         pos_x = self.generate(self.POSITION[:2]) * UNIT_SIZE
         pos_y = self.generate(self.POSITION[2:]) * UNIT_SIZE
-        rad = self.radius(mass)
+        rad = self.generate_radius(mass)
 
         name = name_generator.general_asteroid_name(self, mass, rad)
         super().__init__(mass, Vector(pos_x, pos_y),(255, 255, 255), rad, 1, name)

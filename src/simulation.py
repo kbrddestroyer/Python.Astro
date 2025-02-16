@@ -5,7 +5,6 @@ import typing
 from utils.utility import Singleton
 from graphics.manager import Manager
 from physics.universe import Universe
-from physics.universe_utils import UNIT_SIZE
 
 if typing.TYPE_CHECKING:
     from typing import Callable

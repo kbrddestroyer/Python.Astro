@@ -19,15 +19,12 @@ class Registry:
         self.__registry = []
         self.__remove_queue = []
 
-        self.__index = 0
-
     @property
     def registry(self):
         return self.__registry
 
     def __iter__(self):
-        for item in self.__registry:
-            yield item
+        yield from self.__registry
 
     def __len__(self):
         return len(self.__registry)
