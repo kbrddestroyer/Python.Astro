@@ -75,7 +75,7 @@ class Universe:
         if (k1.astro_radius + k2.astro_radius) < dist:
             return False
 
-        if k2.astro_radius > k1.astro_radius:
+        if k2.mass > k1.mass:
             k1, k2 = k2, k1
 
         self.__collapse_kinetics(k1, k2)
@@ -89,9 +89,8 @@ class Universe:
             self.unregister(k)
 
     def __collapse_kinetics(self, k1: Kinetic, k2 : Kinetic):
-        velocity = (k1.mass * k1.current_velocity.magnitude ** 2 + k2.mass * k2.current_velocity.magnitude ** 2) ** 0.5
-        vector = Vector.vector_sum(k2.current_velocity, k1.current_velocity)
-        k1.apply_velocity(vector.normalized * velocity / (k1.mass + k2.mass))
+        velocity = (k1.current_velocity * k1.mass + k2.current_velocity * k2.mass) / (k1.mass + k2.mass)
+        k1.apply_velocity(velocity)
 
         position = k1.astro_position + (k1.astro_position - k2.astro_position) / (k1.astro_radius + k2.astro_radius)
         k1.astro_position = position
