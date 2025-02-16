@@ -1,16 +1,47 @@
 # Python.Astro
-Newtonian gravity simulation using Pygame
 
 ## Repo health
 
 > status checks will be here
 
-## About this program 
+## About this repo
+
+Astro is python-based mathematical simulation of Newtonian gravity between multiple physical objects in 2D space.
+
+Overview:
+
+- Universe - singleton class, that's capable of most calculations and kinetics acceleration
+- Kinetic - object that has physical parameters, such as mass, acceleration and velocity. It's also used in visualization, converting own parameters to display self in pygame window.
+- Universe Utils file specifies global mathematical operations, such as distance calculating, force between two kinetics and universe-to-display convertations
+- Simulation - controls tickrate and Universe update rate. Parameters can be tweaked to achieve different simulation speed.
+
+Universe yses leapfrog integration for kinetic position and velocity calculations.
+
+> Graphics and visuals will be added soon
 
 ## Installing
 
-## Using
+1. Fetch the dependencies. `pip install -e .`
+
+## Usage
+
+### 1. Tweaking start parameters
+
+There's single `unifile.py` module, that contains start parameters of the simulation. Kinetics can be added here along with start velocity/acceleration/force appliance. 
+
+Simulation parameters can be changed in `simulation.py` module.
+
+Most physical parameters, such as unit size, can be tweaked inside universe utils module.
+
+Asteriod spawn params can be changed inside kinetic module in `AsteroidSpawner` and `Asteroid` classes
+
+### 2. Running
+
+Simply run `python src/main.py`
 
 ## Testing
 
+> Currently there's no tests. This must be changed asap
 
+
+> This file will change soon. 
