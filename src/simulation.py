@@ -10,8 +10,8 @@ from physics.universe_utils import UNIT_SIZE
 if typing.TYPE_CHECKING:
     from typing import Callable
 
-TIME_UNIT   = 1.0e5 / (UNIT_SIZE / 1.0e7)
-TIME_DELTA  = TIME_UNIT * 2
+TIME_UNIT   = 1.0
+TIME_DELTA  = TIME_UNIT / 5
 
 
 @Singleton

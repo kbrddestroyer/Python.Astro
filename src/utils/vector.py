@@ -51,3 +51,6 @@ class Vector:
         self.x = x
         self.y = y
         return self
+
+    def to_tuple(self):
+        return self.x, self.y

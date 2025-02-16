@@ -11,26 +11,30 @@ if typing.TYPE_CHECKING:
 
 
 G_CONST     = 6.6743e-11  # Newtonian gravity constant
-UNIT_SIZE   = 3.0e8       # Unit to meter
+UNIT_SIZE   = 1.0e6       # Unit to meter
 
 
 def generate_v1(k1 : Kinetic, k2 : Kinetic) -> Vector:
     dist = distance(k1, k2)
     vel = (G_CONST * k2.mass / dist) ** 0.5
-    vec = calculate_vector(k1.position, k2.position).normalized.rotate(- math.pi / 2)
+    vec = calculate_vector(k1.astro_position, k2.astro_position).normalized.rotate(- math.pi / 2)
     return vec * vel
 
 
 def generate_moon_v1(moon : Kinetic, planet : Kinetic, sun : Kinetic):
-    return generate_v1(moon, sun) + generate_v1(moon, planet)
+    return Vector.vector_sum(generate_v1(moon, sun), generate_v1(moon, planet))
+
+
+def calculate_distance_between_points(p1 : Vector, p2 : Vector) -> float:
+    return math.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2)
 
 
 def gui_distance(k1 : Kinetic, k2 : Kinetic):
-    return math.sqrt((k1.position.x - k2.position.x) ** 2 + (k1.position.y - k2.position.y) ** 2)
+    return calculate_distance_between_points(k1.position, k2.position)
 
 
 def distance(k1 : Kinetic, k2 : Kinetic) -> float:
-    return gui_distance(k1, k2) * UNIT_SIZE
+    return calculate_distance_between_points(k1.astro_position, k2.astro_position)
 
 
 def astro_to_gui_distance(astro_dist : float) -> float:

@@ -1,22 +1,26 @@
-import random
-from venv import create
-
 from physics import kinetic
 from physics import universe_utils
-from physics.universe_utils import astro_to_gui_distance
 from utils.vector import Vector
 
 
 def initialize():
     kinetic.AsteroidSpawner()
+    sun_r = 6.96e5
+    base_point = Vector(820 * universe_utils.UNIT_SIZE, 540 * universe_utils.UNIT_SIZE)
 
-    sun_r = astro_to_gui_distance(6.96e5)
-    sun = kinetic.Kinetic(1.989e30, (255, 255, 255), (500, 500), sun_r * 1000, 0)
+    sun = kinetic.Kinetic(
+     1.989e30,
+     base_point,
+     (255, 255, 255),
+     sun_r,
+     0
+    )
 
-    earth_pos = Vector(500, 500).normalized * universe_utils.astro_to_gui_distance(1.49597e11)
+    mercury_pos = base_point + Vector(1, 0).normalized * 5.791e7
+    mersury = kinetic.Kinetic(3.33e23, mercury_pos, (255, 0, 0), 2439, 0)
+    mersury.apply_velocity(universe_utils.generate_v1(mersury, sun))
 
-    earth = kinetic.Kinetic(5.97e24, (255, 255, 255), (earth_pos.x, earth_pos.y), 2, 1)
+    earth_pos = Vector(820 * universe_utils.UNIT_SIZE, 540 * universe_utils.UNIT_SIZE) + Vector(1, 0) * 1.49597e11
+
+    earth = kinetic.Kinetic(5.97e24, Vector(earth_pos.x, earth_pos.y), (255, 255, 255), 6378, 1)
     earth.apply_velocity(universe_utils.generate_v1(earth, sun))
-
-    moon = kinetic.Kinetic(7.36e2, (255, 255, 255), (earth_pos.x, earth_pos.y - 5), 1, 1)
-    moon.apply_velocity(universe_utils.generate_moon_v1(moon, earth, sun))

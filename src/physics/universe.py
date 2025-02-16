@@ -67,29 +67,30 @@ class Universe:
         else:
             self.global_registry.register(obj)
 
-    def try_collapse(self, k1 : Kinetic, k2 : Kinetic):
-        dist = universe_utils.gui_distance(k1, k2)
-        if (k1.radius + k2.radius) < dist:
-            return
+    def try_collapse(self, k1 : Kinetic, k2 : Kinetic) -> bool:
+        dist = universe_utils.distance(k1, k2)
+        if (k1.astro_radius + k2.astro_radius) < dist:
+            return False
 
-        if k2.radius > k1.radius:
+        if k2.astro_radius > k1.astro_radius:
             k1, k2 = k2, k1
 
         self.__collapse_kinetics(k1, k2)
+        return True
 
     def __sanitize(self, k : Kinetic):
-        center = Vector(500, 500)
+        center = Vector(*manager.Config.WND_SIZE) / 2
         dist = math.sqrt((k.position.x - center.x) ** 2 + (k.position.y - center.y) ** 2)
 
-        if dist > 500:
+        if dist > max(center.x, center.y):
             self.unregister(k)
 
     def __collapse_kinetics(self, k1: Kinetic, k2 : Kinetic):
         k1.apply_force(Vector.vector_sum(k1.force, k2.force))
-        position = k1.position + (k1.position - k2.position) / (k1.radius + k2.radius)
-        k1.center = (position.x, position.y)
+        position = k1.astro_position + (k1.astro_position - k2.astro_position) / (k1.astro_radius + k2.astro_radius)
+        k1.astro_position = position
 
-        k1.radius = math.sqrt(k1.radius ** 2 + k2.radius ** 2)
+        k1.astro_radius = math.sqrt(k1.astro_radius ** 2 + k2.astro_radius ** 2)
         k1.mass += k2.mass
         self.unregister(k2)
 
@@ -106,11 +107,13 @@ class Universe:
                 if other is obj:
                     continue
 
-                vec = universe_utils.calculate_vector(obj.position, other.position)
+                if self.try_collapse(obj, other):
+                    continue
+
+                vec = universe_utils.calculate_vector(obj.astro_position, other.astro_position)
                 f = universe_utils.calculate_newtonian(obj, other)
 
                 obj.apply_force(Vector.vector_sum(obj.force, vec.normalized * f))
-                self.try_collapse(obj, other)
 
             obj.calculate_leapfrog(delta_time)
             obj.tick(delta_time)

@@ -127,17 +127,40 @@ class Trace(Object):
 
 
 class Kinetic(AstroKineticObject):
-    def __init__(self, mass, *args):
-        super().__init__(*args)
+    def __init__(self, mass, position, color, radius, width):
+        self.__astro_position = position
+        self.__astro_radius = radius
+
+        gui_position = self.astro_to_gui_pos(position)
+        gui_radius = astro_to_gui_distance(radius)
+
+        super().__init__(color, gui_position, gui_radius, width)
         self.mass = mass
 
         self.current_acceleration = Vector(0, 0)
         self.current_velocity = Vector(0, 0)
         self.trace = Trace(500, self.center)
 
+    @property
+    def astro_position(self):
+        return self.__astro_position
+
+    @astro_position.setter
+    def astro_position(self, pos):
+        self.set_position(pos)
+
+    @property
+    def astro_radius(self):
+        return self.__astro_radius
+
+    @astro_radius.setter
+    def astro_radius(self, radius):
+        self.__astro_radius = radius
+        self.radius = astro_to_gui_distance(radius)
+
     @staticmethod
     def astro_to_gui_pos(astro_pos : Vector) -> Tuple[int, int]:
-        return astro_pos.normalized * astro_to_gui_distance(astro_pos.magnitude)
+        return (astro_pos.normalized * astro_to_gui_distance(astro_pos.magnitude)).to_tuple()
 
     @override
     def on_destroy(self):
@@ -153,9 +176,9 @@ class Kinetic(AstroKineticObject):
         return self.current_acceleration * self.mass
 
     def set_position(self, position : Vector):
-        center = Kinetic.astro_to_gui_pos(position)
-        self.astro_pos = position
-        self.center = center
+        gui_position = Kinetic.astro_to_gui_pos(position)
+        self.__astro_position = position
+        self.center = gui_position
 
     def apply_force(self, force : Vector):
         self.current_acceleration = force / self.mass
@@ -171,7 +194,9 @@ class Kinetic(AstroKineticObject):
 
     def precalculate_leapfrog(self, delta_time : float):
         self.current_velocity += self.current_acceleration * 0.5 * delta_time
-        self.position = self.position + (self.current_velocity * delta_time) / UNIT_SIZE
+        position = self.__astro_position + (self.current_velocity * delta_time)
+
+        self.set_position(position)
 
     def calculate_leapfrog(self, delta_time : float):
         self.current_velocity += self.current_acceleration * delta_time
@@ -188,11 +213,10 @@ class Asteroid(Kinetic):
     POSITION = (10, 1600, 10, 1000)
     BASE_VELOCITY_MUL = 100000
     DENSITY = 2.6
-    BASE_RADIUS_MUL = 1000
 
     @staticmethod
     def radius(mass):
-        return ( 3 * Asteroid.DENSITY * mass / 4 * math.pi ) ** ( 1 / 3 ) * Asteroid.BASE_RADIUS_MUL
+        return ( 3 * Asteroid.DENSITY * mass / 4 * math.pi ) ** ( 1 / 3 )
 
     @staticmethod
     def generate(bounds):
@@ -200,10 +224,10 @@ class Asteroid(Kinetic):
 
     def __init__(self):
         mass = self.generate(self.MASS)
-        pos_x = self.generate(self.POSITION[:2])
-        pos_y = self.generate(self.POSITION[2:])
-        rad = astro_to_gui_distance(self.radius(mass))
-        super().__init__(mass, (255, 255, 255), (pos_x, pos_y), rad, 1)
+        pos_x = self.generate(self.POSITION[:2]) * UNIT_SIZE
+        pos_y = self.generate(self.POSITION[2:]) * UNIT_SIZE
+        rad = self.radius(mass)
+        super().__init__(mass, Vector(pos_x, pos_y),(255, 255, 255), rad, 1)
 
         velocity = self.generate((-1, 1)) * self.BASE_VELOCITY_MUL
         vector = Vector(1, 0).rotate(self.generate((0, 2 * math.pi))).normalized
