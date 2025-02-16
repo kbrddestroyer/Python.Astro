@@ -6,6 +6,7 @@ from copy import copy
 import random
 
 import pygame
+
 import simulation
 
 from graphics.manager import Manager
@@ -13,6 +14,7 @@ from astro.basics import Object
 from utils.vector import Vector
 from . import universe
 from .universe_utils import UNIT_SIZE, astro_to_gui_distance
+from utils import name_generator
 
 
 class AstroObject(Object):
@@ -33,7 +35,7 @@ class AstroObject(Object):
 
 
 class AsteroidSpawner(AstroObject):
-    CHANCE = 100
+    CHANCE = 1
 
     def __init__(self):
         self.counter = 0
@@ -43,7 +45,7 @@ class AsteroidSpawner(AstroObject):
     def tick(self, delta_time : float):
         self.counter += delta_time
 
-        if self.counter < 10e5:
+        if self.counter < 10:
             return
 
         self.counter = 0
@@ -58,7 +60,7 @@ class AstroKineticObject(AstroObject):
     def __init__(self, *args):
         super().__init__()
         self.simulation = simulation.Simulation()
-        self.color, self.center, self.radius, self.width = args
+        self.color, self.center, self.radius, self.width, self.name = args
 
     def move(self, position):
         self.center = position
@@ -77,14 +79,16 @@ class AstroKineticObject(AstroObject):
 
     @override
     def render(self):
+        manager = Manager()
         pygame.draw.circle(
-            self.simulation.manager.screen,
+            manager.screen,
             self.color,
             self.center,
             self.radius,
             self.width
         )
-
+        caption = manager.font.render(self.name, True, (250, 250, 250))
+        manager.screen.blit(caption, (Vector(*self.center) - Vector(self.radius, self.radius + 14)).to_tuple())
 
 class Trace(Object):
     def __init__(self, length, start_position):
@@ -127,14 +131,14 @@ class Trace(Object):
 
 
 class Kinetic(AstroKineticObject):
-    def __init__(self, mass, position, color, radius, width):
+    def __init__(self, mass, position, color, radius, width, name=''):
         self.__astro_position = position
         self.__astro_radius = radius
 
         gui_position = self.astro_to_gui_pos(position)
         gui_radius = astro_to_gui_distance(radius)
 
-        super().__init__(color, gui_position, gui_radius, width)
+        super().__init__(color, gui_position, gui_radius, width, name)
         self.mass = mass
 
         self.current_acceleration = Vector(0, 0)
@@ -211,7 +215,7 @@ class Kinetic(AstroKineticObject):
 class Asteroid(Kinetic):
     MASS = (1, 1.e17)
     POSITION = (10, 1600, 10, 1000)
-    BASE_VELOCITY_MUL = 100000
+    BASE_VELOCITY_MUL = 1e6
     DENSITY = 2.6
 
     @staticmethod
@@ -233,3 +237,5 @@ class Asteroid(Kinetic):
         vector = Vector(1, 0).rotate(self.generate((0, 2 * math.pi))).normalized
 
         self.apply_velocity(vector * velocity)
+
+        self.name = name_generator.general_name(self)

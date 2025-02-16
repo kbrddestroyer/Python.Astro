@@ -29,8 +29,11 @@ class Config(EnumType):
 class Manager:
     def __init__(self):
         pygame.init()
+        pygame.font.init()
         self.__screen = pygame.display.set_mode(Config.WND_SIZE)
         pygame.display.set_caption("Astro Simulation")
+
+        self.font = pygame.font.SysFont('Consolas', 12)
 
         self.__render_queue = []
         self.__remove_queue = []

@@ -43,6 +43,9 @@ class Registry:
         self.__remove_queue.append(obj)
         obj.on_destroy()
 
+    def registered(self, obj):
+        return obj in self.__registry and obj not in self.__remove_queue
+
     def update(self):
         for obj in self.__remove_queue:
             self.__registry.remove(obj)
@@ -86,7 +89,10 @@ class Universe:
             self.unregister(k)
 
     def __collapse_kinetics(self, k1: Kinetic, k2 : Kinetic):
-        k1.apply_force(Vector.vector_sum(k1.force, k2.force))
+        velocity = (k1.mass * k1.current_velocity.magnitude ** 2 + k2.mass * k2.current_velocity.magnitude ** 2) ** 0.5
+        vector = Vector.vector_sum(k2.current_velocity, k1.current_velocity)
+        k1.apply_velocity(vector.normalized * velocity / (k1.mass + k2.mass))
+
         position = k1.astro_position + (k1.astro_position - k2.astro_position) / (k1.astro_radius + k2.astro_radius)
         k1.astro_position = position
 
@@ -101,10 +107,14 @@ class Universe:
     def __tick(self, delta_time : float = 0):
         for obj in self.kinetic_registry:
             self.__sanitize(obj)
-
+            if not self.kinetic_registry.registered(obj):
+                continue
             obj.precalculate_leapfrog(delta_time)
             for other in self.kinetic_registry:
                 if other is obj:
+                    continue
+
+                if not self.kinetic_registry.registered(other):
                     continue
 
                 if self.try_collapse(obj, other):
