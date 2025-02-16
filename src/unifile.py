@@ -4,8 +4,7 @@ from utils.vector import Vector
 
 
 def initialize():
-    kinetic.Spawner(kinetic.Asteroid, 0.1)
-
+    kinetic.Spawner(kinetic.Asteroid, 0.5)
     sun_r = 6.96e5
     base_point = Vector(820 * universe_utils.UNIT_SIZE, 540 * universe_utils.UNIT_SIZE)
 

@@ -35,6 +35,33 @@ class AstroObject(Object):
         pass
 
 
+class ImpactEvent(AstroObject):
+    def __init__(self, center, for_ticks):
+        super().__init__()
+        self.center = center
+        self.for_ticks = for_ticks
+        self.ticks = 0
+        self.radius = 0
+
+    @override
+    def tick(self, delta_time : float):
+        self.ticks += 1
+        self.radius = (self.ticks ** 0.7)
+        if self.for_ticks < self.ticks:
+            universe.Universe().unregister(self)
+            Manager().unregister(self)
+
+    @override
+    def render(self):
+        pygame.draw.circle(
+            Manager().screen,
+            (255, 0, 0),
+            self.center,
+            self.radius,
+            1
+        )
+
+
 class Spawner(AstroObject):
     def __init__(self, instance_type, chance):
         self.counter = 0
@@ -136,7 +163,6 @@ class Trace(Object):
 
 
 class Kinetic(AstroKineticObject):
-
     def __init__(self, mass, position, color, radius, width, name=''):
         self.__astro_position = position
         self.__astro_radius = radius

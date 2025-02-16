@@ -68,7 +68,7 @@ class Universe:
         if isinstance(obj, kinetic.AstroKineticObject):
             self.kinetic_registry.unregister(obj)
         else:
-            self.global_registry.register(obj)
+            self.global_registry.unregister(obj)
 
     def try_collapse(self, k1 : Kinetic, k2 : Kinetic) -> bool:
         dist = universe_utils.distance(k1, k2)
@@ -97,10 +97,12 @@ class Universe:
 
         k1.astro_radius = math.sqrt(k1.astro_radius ** 2 + k2.astro_radius ** 2)
         k1.mass += k2.mass
+        kinetic.ImpactEvent(k1.center, 500)
         self.unregister(k2)
 
     def tick(self, delta_time : float = 0):
         self.kinetic_registry.update()
+        self.global_registry.update()
         self.__tick(delta_time)
 
     def __tick(self, delta_time : float = 0):
