@@ -52,21 +52,50 @@ class Registry:
 
         self.__remove_queue.clear()
 
+
+@Singleton
+class UniverseLogger:
+    def __init__(self):
+        self.__log = []
+
+    def on_registered(self, k: Kinetic):
+        self.__log.append(f"{k.name} is created in universe!")
+
+    def on_unregistered(self, k: Kinetic):
+        self.__log.append(f"{k.name} is gone now!")
+
+    def on_collapse(self, k1: Kinetic, k2: Kinetic):
+        self.__log.append(f"{k2.name} impacted {k1.name}, becoming a part of it!")
+
+    def on_throttle(self, k: Kinetic, v: Vector):
+        self.__log.append(f"{k.name} throttled by {v.magnitude / (k.current_velocity.magnitude + 1)}!")
+
+    def finalize(self):
+        with open('universe.log', 'w') as f:
+            for log in self.__log:
+                f.write(log + "\n")
+
+
 @Singleton
 class Universe:
     def __init__(self):
         self.kinetic_registry = Registry()
         self.global_registry = Registry()
 
+    def finalize(self):
+        UniverseLogger().finalize()
+
     def register(self, obj : AstroObject):
         if isinstance(obj, kinetic.AstroKineticObject):
             self.kinetic_registry.register(obj)
+            UniverseLogger().on_registered(obj)
         else:
             self.global_registry.register(obj)
 
     def unregister(self, obj : AstroObject):
         if isinstance(obj, kinetic.AstroKineticObject):
             self.kinetic_registry.unregister(obj)
+            UniverseLogger().on_unregistered(obj)
         else:
             self.global_registry.unregister(obj)
 
@@ -98,6 +127,7 @@ class Universe:
         k1.astro_radius = math.sqrt(k1.astro_radius ** 2 + k2.astro_radius ** 2)
         k1.mass += k2.mass
         kinetic.ImpactEvent(k1.center, 500)
+        UniverseLogger().on_collapse(k1, k2)
         self.unregister(k2)
 
     def tick(self, delta_time : float = 0):
@@ -126,6 +156,8 @@ class Universe:
 
                 obj.apply_force(Vector.vector_sum(obj.force, vec.normalized * f))
 
+            if obj.current_velocity.magnitude < (obj.current_acceleration * delta_time).magnitude:
+                UniverseLogger().on_throttle(obj, obj.current_acceleration * delta_time)
             obj.calculate_leapfrog(delta_time)
             obj.tick(delta_time)
 

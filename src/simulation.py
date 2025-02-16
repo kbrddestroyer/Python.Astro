@@ -34,6 +34,7 @@ class Simulation:
 
     def finalize(self):
         self.__running = False
+        self._universe.finalize()
         del self._universe
         del self._manager
 

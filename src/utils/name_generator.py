@@ -26,13 +26,13 @@ ASTEROIDS = [
 
 
 
-def general_asteroid_name(asteroid : Asteroid) -> str:
+def general_asteroid_name(asteroid : Asteroid, mass, radius) -> str:
     max_mass = asteroid.MASS[1]
-    if asteroid.mass >= max_mass * 0.65:
-        return unique_asteroid_name(asteroid)
+    if mass >= max_mass * 0.65:
+        return unique_asteroid_name(mass)
 
-    return f"AST. {int(asteroid.mass / 1e12)}-{int(asteroid.astro_radius / 1e3)}"
+    return f"AST. {int(mass / 1e12)}-{int(radius / 1e3)}"
 
 
-def unique_asteroid_name(asteroid : Asteroid) -> str:
-    return f"{int(asteroid.mass / 1e15)} {ASTEROIDS[random.randrange(0, len(ASTEROIDS))]}"
+def unique_asteroid_name(mass) -> str:
+    return f"{int(mass / 1e15)} {ASTEROIDS[random.randrange(0, len(ASTEROIDS))]}"

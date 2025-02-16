@@ -86,9 +86,9 @@ class Spawner(AstroObject):
 
 class AstroKineticObject(AstroObject):
     def __init__(self, *args):
-        super().__init__()
         self.simulation = simulation.Simulation()
         self.color, self.center, self.radius, self.width, self.name = args
+        super().__init__()
 
     def move(self, position):
         self.center = position
@@ -232,16 +232,15 @@ class Kinetic(AstroKineticObject):
         self.current_velocity += self.current_acceleration * 0.5 * delta_time
         position = self.__astro_position + (self.current_velocity * delta_time)
 
+        self.current_acceleration = Vector(0, 0)
         self.set_position(position)
 
     def calculate_leapfrog(self, delta_time : float):
-        self.current_velocity += self.current_acceleration * delta_time
+        self.current_velocity += self.current_acceleration * 0.5 * delta_time
 
     @override
     def tick(self, delta_time : float):
         self.trace.position = self.center
-
-        self.current_acceleration = Vector(0, 0)
 
 
 class Asteroid(Kinetic):
@@ -263,11 +262,11 @@ class Asteroid(Kinetic):
         pos_x = self.generate(self.POSITION[:2]) * UNIT_SIZE
         pos_y = self.generate(self.POSITION[2:]) * UNIT_SIZE
         rad = self.radius(mass)
-        super().__init__(mass, Vector(pos_x, pos_y),(255, 255, 255), rad, 1)
+
+        name = name_generator.general_asteroid_name(self, mass, rad)
+        super().__init__(mass, Vector(pos_x, pos_y),(255, 255, 255), rad, 1, name)
 
         velocity = self.generate((-1, 1)) * self.BASE_VELOCITY_MUL
         vector = Vector(1, 0).rotate(self.generate((0, 2 * math.pi))).normalized
 
         self.apply_velocity(vector * velocity)
-
-        self.name = name_generator.general_asteroid_name(self)
