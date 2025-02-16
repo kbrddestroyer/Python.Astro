@@ -1,5 +1,8 @@
 # Python.Astro
 
+![Simulation window](https://github.com/user-attachments/assets/0b35ba48-3540-47d1-bdcb-a590008a3eff)
+
+
 ## Repo health
 
 > status checks will be here
