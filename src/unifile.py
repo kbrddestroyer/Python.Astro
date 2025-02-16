@@ -4,7 +4,8 @@ from utils.vector import Vector
 
 
 def initialize():
-    kinetic.AsteroidSpawner()
+    kinetic.Spawner(kinetic.Asteroid, 0.1)
+
     sun_r = 6.96e5
     base_point = Vector(820 * universe_utils.UNIT_SIZE, 540 * universe_utils.UNIT_SIZE)
 
@@ -26,6 +27,17 @@ def initialize():
     venus.apply_velocity(universe_utils.generate_v1(venus, sun))
 
     earth_pos = base_point + Vector(1, 0) * 1.49597e8
-
-    earth = kinetic.Kinetic(5.97e24, Vector(earth_pos.x, earth_pos.y), (255, 255, 255), 6378, 1, 'Earth')
+    earth = kinetic.Kinetic(5.97e24, earth_pos, (255, 255, 255), 6378, 1, 'Earth')
     earth.apply_velocity(universe_utils.generate_v1(earth, sun))
+
+    mars_pos = base_point + Vector(1, 0) * 2.06e8
+    mars = kinetic.Kinetic(6.4171e23, mars_pos, (255, 255, 255), 3396, 1, 'Mars')
+    mars.apply_velocity(universe_utils.generate_v1(mars, sun))
+
+    jupiter_pos = base_point + Vector(1, 0) * 7.40e8
+    jupiter = kinetic.Kinetic(1.8986e27, jupiter_pos, (255, 255, 255), 69911, 1, 'Jupiter')
+    jupiter.apply_velocity(universe_utils.generate_v1(jupiter, sun))
+
+    saturn_pos = base_point + Vector(1, 0) * 1.25e9
+    saturn = kinetic.Kinetic(1.8986e27, saturn_pos, (255, 255, 255), 69911, 1, 'Saturn')
+    saturn.apply_velocity(universe_utils.generate_v1(saturn, sun))

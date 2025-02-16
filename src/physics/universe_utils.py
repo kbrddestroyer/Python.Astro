@@ -10,8 +10,8 @@ if typing.TYPE_CHECKING:
     from physics.kinetic import Kinetic
 
 
-G_CONST     = 6.6743e-11  # Newtonian gravity constant
-UNIT_SIZE   = 1.0e6       # Unit to meter
+G_CONST     = 6.6743e-11     # Newtonian gravity constant
+UNIT_SIZE   = 2e6            # Unit to meter
 
 
 def generate_v1(k1 : Kinetic, k2 : Kinetic) -> Vector:

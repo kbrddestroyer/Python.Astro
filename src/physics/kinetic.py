@@ -12,9 +12,10 @@ import simulation
 from graphics.manager import Manager
 from astro.basics import Object
 from utils.vector import Vector
+from utils import name_generator
+
 from . import universe
 from .universe_utils import UNIT_SIZE, astro_to_gui_distance
-from utils import name_generator
 
 
 class AstroObject(Object):
@@ -34,11 +35,11 @@ class AstroObject(Object):
         pass
 
 
-class AsteroidSpawner(AstroObject):
-    CHANCE = 1
-
-    def __init__(self):
+class Spawner(AstroObject):
+    def __init__(self, instance_type, chance):
         self.counter = 0
+        self.__instance_type = instance_type
+        self.__chance = chance
         super().__init__()
 
     @override
@@ -52,8 +53,8 @@ class AsteroidSpawner(AstroObject):
 
         chance = random.random()
 
-        if chance < (self.CHANCE / 100):
-            Asteroid()
+        if chance < (self.__chance / 100):
+            self.__instance_type()
 
 
 class AstroKineticObject(AstroObject):
@@ -98,6 +99,7 @@ class Trace(Object):
         self.__trace = []
         self.__length = length
         self.__position = copy(start_position)
+        self.__ticks = 0
 
     @property
     def position(self):
@@ -105,10 +107,13 @@ class Trace(Object):
 
     @position.setter
     def position(self, position):
+        self.__ticks += 1
+        self.__ticks = 0
+
         if len(self.__trace) >= self.__length:
             self.__trace.pop(0)
-        self.__trace.append(copy(self.__position))
 
+        self.__trace.append(copy(self.__position))
         self.__position = position
 
     @override
@@ -131,6 +136,7 @@ class Trace(Object):
 
 
 class Kinetic(AstroKineticObject):
+
     def __init__(self, mass, position, color, radius, width, name=''):
         self.__astro_position = position
         self.__astro_radius = radius
@@ -143,7 +149,7 @@ class Kinetic(AstroKineticObject):
 
         self.current_acceleration = Vector(0, 0)
         self.current_velocity = Vector(0, 0)
-        self.trace = Trace(500, self.center)
+        self.trace = Trace(250, self.center)
 
     @property
     def astro_position(self):
@@ -213,7 +219,7 @@ class Kinetic(AstroKineticObject):
 
 
 class Asteroid(Kinetic):
-    MASS = (1, 1.e17)
+    MASS = (1e8, 1.e17)
     POSITION = (10, 1600, 10, 1000)
     BASE_VELOCITY_MUL = 1e6
     DENSITY = 2.6
@@ -238,4 +244,4 @@ class Asteroid(Kinetic):
 
         self.apply_velocity(vector * velocity)
 
-        self.name = name_generator.general_name(self)
+        self.name = name_generator.general_asteroid_name(self)
