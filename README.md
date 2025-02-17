@@ -35,7 +35,14 @@ $$
 
 ## Integration algorithms 
 
-Now when we have current velocity, we need the way of shift precise calculation. The most obvious way is to use Euler's integration, but then we'll face an issue, that this way is highly dependent on simulation's tickrate (∆t). Fortunately, there's plenty of methods. We'll use **leapfrog** algorithm.
+Now when we have current velocity, we need the way of shift precise calculation. 
+The most obvious way is to use Euler's integration, but then we'll face an issue, that this way is highly dependent on 
+simulation's refresh rate and ∆t between ticks. Fortunately, there's plenty of methods we can use instead.
+I've used [leapfrog algorithm](https://en.wikipedia.org/wiki/Leapfrog_integration).
+
+### How it works?
+
+
 
 ## Code logic
 

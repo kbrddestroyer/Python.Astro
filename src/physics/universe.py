@@ -43,6 +43,9 @@ class Registry:
     def registered(self, obj):
         return obj in self.__registry and obj not in self.__remove_queue
 
+    def clear(self):
+        self.__registry.clear()
+
     def update(self):
         for obj in self.__remove_queue:
             self.__registry.remove(obj)
@@ -81,6 +84,8 @@ class Universe:
 
     def finalize(self):
         UniverseLogger().finalize()
+        self.kinetic_registry.clear()
+        self.global_registry.clear()
 
     def register(self, obj : AstroObject):
         if isinstance(obj, kinetic.AstroKineticObject):
@@ -137,7 +142,9 @@ class Universe:
             self.__sanitize(obj)
             if not self.kinetic_registry.registered(obj):
                 continue
+
             obj.precalculate_leapfrog(delta_time)
+
             for other in self.kinetic_registry:
                 if other is obj:
                     continue
@@ -155,6 +162,7 @@ class Universe:
 
             if obj.current_velocity.magnitude < (obj.current_acceleration * delta_time).magnitude:
                 UniverseLogger().on_throttle(obj, obj.current_acceleration * delta_time)
+
             obj.calculate_leapfrog(delta_time)
             obj.tick(delta_time)
 

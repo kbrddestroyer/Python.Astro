@@ -18,9 +18,9 @@ class Vector:
         return iter([self.x, self.y])
 
     def __add__(self, other):
-        if isinstance(other, Vector):
+        if other.__class__.__name__ == "Vector":
             return Vector(self.x + other.x, self.y + other.y)
-        raise NotImplementedError
+        raise NotImplementedError(type(other))
 
     def __sub__(self, other):
         if isinstance(other, Vector):
