@@ -197,7 +197,6 @@ class Kinetic(AstroKineticObject):
         return (astro_pos.normalized * astro_to_gui_distance(astro_pos.magnitude)).to_tuple()
 
     def try_scatter(self):
-        return False
         if self.current_acceleration.magnitude:
             if self.current_acceleration.magnitude / 3 > G_CONST * self.mass / (self.astro_radius ** 2):
                 self.scatter()
