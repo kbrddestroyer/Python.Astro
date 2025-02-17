@@ -15,13 +15,9 @@ Overview:
 
 ## Some math background 
 
-<script type="text/javascript" async
-  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
-</script>
-
 It's pretty obvious, that gravitational pull between two objects is equal to:
 
-$$ F = G \frac{m_1 m_2}{r^2} $$
+![Gravitational Force](https://latex.codecogs.com/svg.latex?F%20=%20G%20%5Cfrac%7Bm_1%20m_2%7D%7Br%5E2%7D)
 
 ## Code logic
 
