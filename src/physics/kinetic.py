@@ -194,6 +194,26 @@ class Kinetic(AstroKineticObject):
     def astro_to_gui_pos(astro_pos : Vector) -> Tuple[int, int]:
         return (astro_pos.normalized * astro_to_gui_distance(astro_pos.magnitude)).to_tuple()
 
+    def try_scatter(self):
+        if self.current_acceleration.magnitude:
+            if self.current_acceleration.magnitude > self.mass / 1e12:
+                self.scatter()
+
+    def scatter(self):
+        velocity = self.current_velocity + self.current_acceleration / self.mass
+        frags = 8
+        for id in range(frags):
+            angle = (id / frags) * (math.pi / 5)
+            Fragment(
+                self.mass / 4,
+                self.astro_position + (velocity.normalized * self.astro_radius * id * 30),
+                (200, 200, 200),
+                self.astro_radius,
+                self.width,
+                "Fragment"
+            ).apply_velocity(copy(velocity).rotate(angle))
+        universe.Universe().unregister(self)
+
     @override
     def on_destroy(self):
         Manager().unregister(self.trace)
@@ -225,18 +245,36 @@ class Kinetic(AstroKineticObject):
         self.current_acceleration += acceleration
 
     def precalculate_leapfrog(self, delta_time : float):
-        self.current_velocity += self.current_acceleration * 0.5 * delta_time
+        velocity = self.current_velocity + self.current_acceleration * 0.5 * delta_time
+        self.try_scatter()
+        self.apply_velocity(velocity)
         position = self.__astro_position + (self.current_velocity * delta_time)
 
         self.current_acceleration = Vector(0, 0)
         self.set_position(position)
 
     def calculate_leapfrog(self, delta_time : float):
-        self.current_velocity += self.current_acceleration * 0.5 * delta_time
+        velocity = self.current_velocity + self.current_acceleration * 0.5 * delta_time
+        self.apply_velocity(velocity)
 
     @override
     def tick(self, delta_time : float):
         self.trace.position = self.center
+
+
+class Fragment(Kinetic):
+    @override
+    def try_scatter(self):
+        if self.mass > 1e20:
+            super().try_scatter()
+
+    @override
+    def tick(self, delta_time : float):
+        super().tick(delta_time)
+        self.mass /= 1.01
+        self.name = f"Fragment mass {int(self.mass / 1e3)}"
+        if self.mass < 1e3:
+            universe.Universe().unregister(self)
 
 
 class Asteroid(Kinetic):

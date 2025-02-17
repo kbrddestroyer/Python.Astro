@@ -101,16 +101,23 @@ class Universe:
         else:
             self.global_registry.unregister(obj)
 
-    def try_collapse(self, k1 : Kinetic, k2 : Kinetic) -> bool:
-        dist = universe_utils.distance(k1, k2)
-        if (k1.astro_radius + k2.astro_radius) < dist:
+    def try_collapse(self, k1 : Kinetic, k2 : Kinetic, delta_time : float) -> bool:
+        velocity = k1.current_velocity
+        direction = universe_utils.calculate_vector(k1.astro_position, k2.astro_position)
+        dist = direction.magnitude
+
+        if dist > (k1.astro_radius + k2.astro_radius) * 80:
             return False
 
-        if k2.mass > k1.mass:
-            k1, k2 = k2, k1
+        if velocity.magnitude * delta_time > dist:
+            angle = Vector.angle(velocity, direction)
+            h = dist * math.sin(angle)
 
-        self.__collapse_kinetics(k1, k2)
-        return True
+            if h <= (k1.astro_radius + k2.astro_radius):
+                self.__collapse_kinetics(k1, k2)
+                return True
+
+        return False
 
     def __sanitize(self, k : Kinetic):
         center = Vector(*manager.Config.WND_SIZE) / 2
@@ -120,6 +127,9 @@ class Universe:
             self.unregister(k)
 
     def __collapse_kinetics(self, k1: Kinetic, k2 : Kinetic):
+        if k2.mass > k1.mass:
+            k1, k2 = k2, k1
+
         velocity = (k1.current_velocity * k1.mass + k2.current_velocity * k2.mass) / (k1.mass + k2.mass)
         k1.apply_velocity(velocity)
 
@@ -152,8 +162,8 @@ class Universe:
                 if not self.kinetic_registry.registered(other):
                     continue
 
-                if self.try_collapse(obj, other):
-                    continue
+                if self.try_collapse(obj, other, delta_time):
+                    break
 
                 vec = universe_utils.calculate_vector(obj.astro_position, other.astro_position)
                 f = universe_utils.calculate_newtonian(obj, other)
