@@ -17,7 +17,9 @@ Overview:
 
 It's pretty obvious, that gravitational pull between two objects is equal to:
 
-![Gravitational Force](https://latex.codecogs.com/svg.latex?F%20=%20G%20%5Cfrac%7Bm_1%20m_2%7D%7Br%5E2%7D)
+$$
+F = G \frac{m_1 m_2}{r^2}
+$$
 
 ## Code logic
 
