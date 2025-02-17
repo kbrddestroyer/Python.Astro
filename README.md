@@ -15,16 +15,23 @@ Overview:
 
 ## Some math background 
 
-It's pretty obvious, that gravitational pull between two objects is equal to:
+If we have N objects interacting in Newtonian space, gravitational pull for each object will be:
 
 $$
 \begin{align}
-|\overrightarrow{F_{ab}}| = G \frac{m M}{r^2} \\
+\mod{\overrightarrow{F_{ab}}} = G \frac{m M}{r^2} \\
 \overrightarrow{F} = \sum^N_{i=1}\overrightarrow{F_i} \\
 \end{align}
 $$
 
+The magnitude of $ \overrightarrow{F} & vector will remain the same for each different object, but not it's direction. Now we can calculate the acceleration, velocity and shift by ∆t time.
 
+$$
+\begin{align}
+\vec{a} = \frac{\vec{f}}{m}
+\vec{\nu} = \vec{a} \Delta t
+\end{align}
+$$
 
 ## Code logic
 
