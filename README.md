@@ -19,7 +19,6 @@ It's pretty obvious, that gravitational pull between two objects is equal to:
 
 $$
 F_ab = G \frac{m M}{r^2}
-
 F = /sum^N_{i=1}F_i
 $$
 
