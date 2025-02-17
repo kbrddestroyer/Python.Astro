@@ -11,11 +11,12 @@ import simulation
 
 from graphics.manager import Manager
 from astro.basics import Object
+from utils.name_generator import ASTEROIDS
 from utils.vector import Vector
 from utils import name_generator
 
 from . import universe
-from .universe_utils import UNIT_SIZE, astro_to_gui_distance
+from .universe_utils import UNIT_SIZE, astro_to_gui_distance, G_CONST
 
 
 class AstroObject(Object):
@@ -118,6 +119,7 @@ class AstroKineticObject(AstroObject):
         caption = manager.font.render(self.name, True, (250, 250, 250))
         manager.screen.blit(caption, (Vector(*self.center) - Vector(self.radius, self.radius + 14)).to_tuple())
 
+
 class Trace(Object):
     def __init__(self, length, start_position):
         super().__init__()
@@ -195,20 +197,21 @@ class Kinetic(AstroKineticObject):
         return (astro_pos.normalized * astro_to_gui_distance(astro_pos.magnitude)).to_tuple()
 
     def try_scatter(self):
+        return False
         if self.current_acceleration.magnitude:
-            if self.current_acceleration.magnitude > self.mass / 1e12:
+            if self.current_acceleration.magnitude / 3 > G_CONST * self.mass / (self.astro_radius ** 2):
                 self.scatter()
 
     def scatter(self):
         velocity = self.current_velocity + self.current_acceleration / self.mass
-        frags = 8
-        for id in range(frags):
-            angle = (id / frags) * (math.pi / 5)
+        frags = 3
+        for index in range(frags):
+            angle = (index / frags) * (math.pi / 180)
             Fragment(
-                self.mass / 4,
-                self.astro_position + (velocity.normalized * self.astro_radius * id * 30),
+                self.mass / frags,
+                self.astro_position + (velocity.normalized * self.astro_radius * index * 2),
                 (200, 200, 200),
-                self.astro_radius,
+                self.astro_radius / (frags ** (1 / 3)),
                 self.width,
                 "Fragment"
             ).apply_velocity(copy(velocity).rotate(angle))
@@ -265,8 +268,11 @@ class Kinetic(AstroKineticObject):
 class Fragment(Kinetic):
     @override
     def try_scatter(self):
-        if self.mass > 1e20:
-            super().try_scatter()
+        return
+
+    @override
+    def scatter(self):
+        pass
 
     @override
     def tick(self, delta_time : float):
@@ -278,14 +284,14 @@ class Fragment(Kinetic):
 
 
 class Asteroid(Kinetic):
-    MASS = (1e8, 1.e17)
+    MASS = (1e9, 1.e12)
     POSITION = (10, 1600, 10, 1000)
     BASE_VELOCITY_MUL = 1e6
-    DENSITY = 2.6
+    DENSITY = 5.6e12
 
     @staticmethod
     def generate_radius(mass):
-        return ( 3 * Asteroid.DENSITY * mass / 4 * math.pi ) ** ( 1 / 3 )
+        return (3 * mass / (Asteroid.DENSITY * math.pi * 4)) ** (1 / 3)
 
     @staticmethod
     def generate(bounds):

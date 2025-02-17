@@ -31,8 +31,8 @@ def general_asteroid_name(asteroid : Asteroid, mass, radius) -> str:
     if mass >= max_mass * 0.65:
         return unique_asteroid_name(mass)
 
-    return f"AST. {int(mass / 1e12)}-{int(radius / 1e3)}"
+    return f"AST. {int(mass / 1e9)}-{int(radius * 1000)}"
 
 
 def unique_asteroid_name(mass) -> str:
-    return f"{int(mass / 1e15)} {ASTEROIDS[random.randrange(0, len(ASTEROIDS))]}"
+    return f"{int(mass / 1e9)} {ASTEROIDS[random.randrange(0, len(ASTEROIDS))]}"

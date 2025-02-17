@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import math
+import numpy as np
 
 
 class Vector:
@@ -45,10 +46,12 @@ class Vector:
         return Vector(self.x / self.magnitude, self.y / self.magnitude)
 
     @staticmethod
-    def angle(v1 : Vector, v2 : Vector) -> float:
-        if not v1.magnitude or not v2.magnitude:
+    def angle(vec1 : Vector, vec2 : Vector) -> float:
+        if not vec1.magnitude or not vec2.magnitude:
             return -1
-        val = min(max(((v1.x * v2.x + v1.y * v2.y) / (v1.magnitude * v2.magnitude)), -1), 1)
+        v1 = vec1.normalized
+        v2 = vec2.normalized
+        val = (v1.x * v2.x + v1.y * v2.y) / (v1.magnitude * v2.magnitude)
         return math.acos(val)
 
     def rotate(self, radian):

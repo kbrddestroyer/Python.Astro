@@ -106,10 +106,14 @@ class Universe:
         direction = universe_utils.calculate_vector(k1.astro_position, k2.astro_position)
         dist = direction.magnitude
 
+        if dist <= (k1.astro_radius + k2.astro_radius):
+            self.__collapse_kinetics(k1, k2)
+            return True
+
         if dist > (k1.astro_radius + k2.astro_radius) * 80:
             return False
 
-        if velocity.magnitude * delta_time > dist:
+        if velocity.magnitude * delta_time * 4 > dist:
             angle = Vector.angle(velocity, direction)
             h = dist * math.sin(angle)
 
