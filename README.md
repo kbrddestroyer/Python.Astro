@@ -13,7 +13,7 @@ Astro is python-based mathematical simulation of Newtonian gravity between multi
 
 Overview:
 
-## Some math background 
+## Some basic physics 
 
 If we have N objects interacting in Newtonian space, gravitational pull for each object will be:
 
@@ -28,8 +28,8 @@ The magnitude of $ \overrightarrow{F} & vector will remain the same for each dif
 
 $$
 \begin{align}
-\vec{a} = \frac{\vec{f}}{m}
-\vec{\nu} = \vec{a} \Delta t
+\vec{a} = \frac{\vec{f}}{m} \\
+\vec{v} = \vec{a} \Delta t \\
 \end{align}
 $$
 
