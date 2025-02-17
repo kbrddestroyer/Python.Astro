@@ -19,10 +19,12 @@ It's pretty obvious, that gravitational pull between two objects is equal to:
 
 $$
 \begin{align}
-F_ab = G \frac{m M}{r^2} \\
-F = \sum^N_{i=1}F_i \\
+|\overrightarrow{F_{ab}}| = G \frac{m M}{r^2} \\
+\overrightarrow{F} = \sum^N_{i=1}\overrightarrow{F_i} \\
 \end{align}
 $$
+
+
 
 ## Code logic
 
