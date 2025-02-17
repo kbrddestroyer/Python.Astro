@@ -13,6 +13,14 @@ Astro is python-based mathematical simulation of Newtonian gravity between multi
 
 Overview:
 
+## Some math background 
+
+It's pretty obvious, that gravitational pull between two objects is equal to:
+
+$$F=GmM/r^2$$
+
+## Code logic
+
 - Universe - singleton class, that's capable of most calculations and kinetics acceleration
 - Kinetic - object that has physical parameters, such as mass, acceleration and velocity. It's also used in visualization, converting own parameters to display self in pygame window.
 - Universe Utils file specifies global mathematical operations, such as distance calculating, force between two kinetics and universe-to-display convertations
