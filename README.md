@@ -24,7 +24,7 @@ $$
 \end{align}
 $$
 
-The magnitude of $ \overrightarrow{F} & vector will remain the same for each different object, but not it's direction. Now we can calculate the acceleration, velocity and shift by ∆t time.
+The magnitude of $ \overrightarrow{F} $ vector will remain the same for each different object, but not it's direction. Now we can calculate the acceleration, velocity and shift by ∆t time.
 
 $$
 \begin{align}
@@ -32,6 +32,10 @@ $$
 \vec{v} = \vec{a} \Delta t \\
 \end{align}
 $$
+
+## Integration algorithms 
+
+Now when we have current velocity, we need the way of shift precise calculation. The most obvious way is to use Euler's integration, but then we'll face an issue, that this way is highly dependent on simulation's tickrate (∆t). Fortunately, there's plenty of methods. We'll use **leapfrog** algorithm.
 
 ## Code logic
 
