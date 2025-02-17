@@ -205,7 +205,7 @@ class Kinetic(AstroKineticObject):
         velocity = self.current_velocity + self.current_acceleration / self.mass
         frags = 3
         for index in range(frags):
-            angle = (index / frags) * (math.pi / 180)
+            angle = (index / frags) * (math.pi / 30)
             Fragment(
                 self.mass / frags,
                 self.astro_position + (velocity.normalized * self.astro_radius * index * 2),
