@@ -13,16 +13,36 @@ Astro is python-based mathematical simulation of Newtonian gravity between multi
 
 Overview:
 
-## Some math background 
+## Some basic physics 
 
-It's pretty obvious, that gravitational pull between two objects is equal to:
+If we have N objects interacting in Newtonian space, gravitational pull for each object will be:
 
 $$
 \begin{align}
-F_ab = G \frac{m M}{r^2} \\
-F = \sum^N_{i=1}F_i \\
+\mod{\overrightarrow{F_{ab}}} = G \frac{m M}{r^2} \\
+\overrightarrow{F} = \sum^N_{i=1}\overrightarrow{F_i} \\
 \end{align}
 $$
+
+The magnitude of $ \overrightarrow{F} $ vector will remain the same for each different object, but not it's direction. Now we can calculate the acceleration, velocity and shift by ∆t time.
+
+$$
+\begin{align}
+\vec{a} = \frac{\vec{f}}{m} \\
+\vec{v} = \vec{a} \Delta t \\
+\end{align}
+$$
+
+## Integration algorithms 
+
+Now when we have current velocity, we need the way of shift precise calculation. 
+The most obvious way is to use Euler's integration, but then we'll face an issue, that this way is highly dependent on 
+simulation's refresh rate and ∆t between ticks. Fortunately, there's plenty of methods we can use instead.
+I've used [leapfrog algorithm](https://en.wikipedia.org/wiki/Leapfrog_integration).
+
+### How it works?
+
+
 
 ## Code logic
 

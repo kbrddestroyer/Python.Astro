@@ -20,7 +20,7 @@ class Vector:
     def __add__(self, other):
         if isinstance(other, Vector):
             return Vector(self.x + other.x, self.y + other.y)
-        raise NotImplementedError
+        raise NotImplementedError(type(other))
 
     def __sub__(self, other):
         if isinstance(other, Vector):
@@ -43,6 +43,13 @@ class Vector:
     @property
     def normalized(self):
         return Vector(self.x / self.magnitude, self.y / self.magnitude)
+
+    @staticmethod
+    def angle(v1 : Vector, v2 : Vector) -> float:
+        if not v1.magnitude or not v2.magnitude:
+            return -1
+        val = min(max(((v1.x * v2.x + v1.y * v2.y) / (v1.magnitude * v2.magnitude)), -1), 1)
+        return math.acos(val)
 
     def rotate(self, radian):
         x = self.x * math.cos(radian) - self.y * math.sin(radian)

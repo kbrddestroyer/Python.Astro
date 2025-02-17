@@ -9,7 +9,8 @@ dependencies = [
     "pygame",
     "pytest",
     "importlib",
-    "pylint"
+    "pylint",
+    "matplotlib"
 ]
 
 [build-system]
