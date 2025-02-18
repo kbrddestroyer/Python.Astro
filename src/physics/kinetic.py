@@ -11,7 +11,6 @@ import simulation
 
 from graphics.manager import Manager
 from astro.basics import Object
-from utils.name_generator import ASTEROIDS
 from utils.vector import Vector
 from utils import name_generator
 
