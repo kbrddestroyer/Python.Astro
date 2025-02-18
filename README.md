@@ -24,7 +24,7 @@ $$
 \end{align}
 $$
 
-The magnitude of $ \overrightarrow{F} $ vector will remain the same for each different object, but not it's direction. Now we can calculate the acceleration, velocity and shift by ∆t time.
+The magnitude of $` \overrightarrow{F} `$ vector will remain the same for each different object, but not it's direction. Now we can calculate the acceleration, velocity and shift by ∆t time.
 
 $$
 \begin{align}
