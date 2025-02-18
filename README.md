@@ -47,7 +47,8 @@ I've used [leapfrog algorithm](https://en.wikipedia.org/wiki/Leapfrog_integratio
 ## Code logic
 
 - Universe - singleton class, that's capable of most calculations and kinetics acceleration
-- Kinetic - object that has physical parameters, such as mass, acceleration and velocity. It's also used in visualization, converting own parameters to display self in pygame window.
+- Kinetic - object that has physical parameters, such as mass, acceleration and velocity. It's also used in visualization, converting own parameters to display self in pygame window. Also it can break into fragments if the external forces are much greater than it's own gravity.
+- Spawner can be added into unifile. Spawnables must contain no parameters in constructor.
 - Universe Utils file specifies global mathematical operations, such as distance calculating, force between two kinetics and universe-to-display convertations
 - Simulation - controls tickrate and Universe update rate. Parameters can be tweaked to achieve different simulation speed.
 
@@ -58,6 +59,7 @@ Universe yses leapfrog integration for kinetic position and velocity calculation
 ## Installing
 
 1. Fetch the dependencies. `pip install -e .`
+2. Optionally install jupiter
 
 ## Usage
 
@@ -71,13 +73,18 @@ Most physical parameters, such as unit size, can be tweaked inside universe util
 
 Asteriod spawn params can be changed inside kinetic module in `AsteroidSpawner` and `Asteroid` classes
 
+> Configuration will be moved to separate .ini or .py file soon
+
 ### 2. Running
 
-Simply run `python src/main.py`
+Simply run `python src/main.py` to launch your `unifile.py` simulation
 
 ## Testing
 
-> Currently there's no tests. This must be changed asap
+Jupiter notebook contains some basic computing and graphic plotting. It shows orbit parameters, speed and energy drift of a kinetic object.
 
+> Currently there's no unit tests. Even basic. This must be changed asap
+
+Codestyle checks are performed with `pylint`, simply run `pylint src`
 
 > This file will change soon. 
