@@ -6,7 +6,7 @@
 ## Repo health
 
 > status checks will be here
-> soon
+> soon, soon
 
 ## About this repo
 
