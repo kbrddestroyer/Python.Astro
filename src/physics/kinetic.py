@@ -1,7 +1,8 @@
 from __future__ import annotations
 
+import typing
 import math
-from typing import override, Tuple
+from typing import override
 from copy import copy
 import random
 
@@ -16,6 +17,10 @@ from utils import name_generator
 
 from . import universe
 from .universe_utils import UNIT_SIZE, astro_to_gui_distance, G_CONST
+
+
+if typing.TYPE_CHECKING:
+    from typing import Tuple
 
 
 class AstroObject(Object):
