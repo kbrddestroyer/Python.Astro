@@ -1,7 +1,6 @@
 from __future__ import annotations
 
-import typing
-from typing import override
+from typing import override, TYPE_CHECKING
 from copy import copy
 import math
 import random
@@ -17,7 +16,7 @@ from . import universe
 from .universe_utils import UNIT_SIZE, astro_to_gui_distance, G_CONST
 
 
-if typing.TYPE_CHECKING:
+if TYPE_CHECKING:
     from typing import Tuple
 
 

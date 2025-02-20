@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 import math
-import typing
 
+from typing import TYPE_CHECKING
 from physics import kinetic
 from graphics import manager
 from utils.utility import Singleton
@@ -10,7 +10,7 @@ from utils.vector import Vector
 
 from . import universe_utils
 
-if typing.TYPE_CHECKING:
+if TYPE_CHECKING:
     from physics.kinetic import Kinetic, AstroObject
 
 

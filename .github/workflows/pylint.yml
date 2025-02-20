@@ -28,4 +28,5 @@ jobs:
         pip install pylint
     - name: Analysing the code with pylint
       run: |
-        pylint src
+        pylint --init-hook="import sys; sys.path.append('.')" src
+
