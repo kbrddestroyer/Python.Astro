@@ -5,8 +5,7 @@
 
 ## Repo health
 
-> status checks will be here
-> soon, soon
+[![Pylint](https://github.com/kbrddestroyer/Python.Astro/actions/workflows/pylint.yml/badge.svg?branch=main)](https://github.com/kbrddestroyer/Python.Astro/actions/workflows/pylint.yml)
 
 ## About this repo
 
