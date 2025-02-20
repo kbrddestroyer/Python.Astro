@@ -6,11 +6,10 @@ from graphics import manager
 from physics import universe
 from utils.utility import Singleton
 
+from config.config import Configuration
+
 if typing.TYPE_CHECKING:
     from typing import Callable
-
-TIME_UNIT   = 1.0
-TIME_DELTA  = TIME_UNIT * 3
 
 
 @Singleton
@@ -42,7 +41,7 @@ class Simulation:
             init()
 
         while self.__running:
-            self.tick(TIME_DELTA)
+            self.tick(Configuration.DELTA_TIME)
             self._manager.update()
 
     def tick(self, delta_time : float = 0):

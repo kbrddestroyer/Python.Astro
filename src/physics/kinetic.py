@@ -5,7 +5,6 @@ from copy import copy
 import math
 import random
 
-import astroid.nodes
 import pygame
 
 import simulation
@@ -13,6 +12,7 @@ from graphics.manager import Manager
 from astro.basics import Object
 from utils.vector import Vector
 from utils import name_generator
+from config.config import Configuration
 
 from . import universe
 from .universe_utils import UNIT_SIZE, astro_to_gui_distance, G_CONST
@@ -288,10 +288,10 @@ class Fragment(Kinetic):
 
 
 class Asteroid(Kinetic):
-    MASS = (1e9, 1.e12)
-    POSITION = (10, 1600, 10, 1000)
-    BASE_VELOCITY_MUL = 1e6
-    DENSITY = 5.6e12
+    MASS = Configuration.MASS
+    POSITION = Configuration.POSITION
+    BASE_VELOCITY_MUL = Configuration.BASE_VELOCITY_MUL
+    DENSITY = Configuration.DENSITY
 
     @staticmethod
     def generate_radius(mass):
