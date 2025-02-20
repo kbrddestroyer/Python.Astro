@@ -11,7 +11,7 @@ from utils.vector import Vector
 from . import universe_utils
 
 if typing.TYPE_CHECKING:
-    from kinetic import Kinetic, AstroObject
+    from physics.kinetic import Kinetic, AstroObject
 
 
 class Registry:
