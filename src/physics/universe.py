@@ -45,6 +45,7 @@ class Registry:
 
     def clear(self):
         self.__registry.clear()
+        self.__remove_queue.clear()
 
     def update(self):
         for obj in self.__remove_queue:
@@ -111,6 +112,7 @@ class Universe:
             return True
 
         if dist > (k1.astro_radius + k2.astro_radius) * 80:
+            self.__collapse_kinetics(k1, k2)
             return False
 
         if velocity.magnitude * delta_time * 4 > dist:
