@@ -1,15 +1,13 @@
 from __future__ import annotations
 
 import typing
-import math
 from typing import override
 from copy import copy
+import math
 import random
-
 import pygame
 
 import simulation
-
 from graphics.manager import Manager
 from astro.basics import Object
 from utils.vector import Vector
