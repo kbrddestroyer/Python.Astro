@@ -6,12 +6,13 @@
 ## Repo health
 
 [![Pylint](https://github.com/kbrddestroyer/Python.Astro/actions/workflows/pylint.yml/badge.svg?branch=main)](https://github.com/kbrddestroyer/Python.Astro/actions/workflows/pylint.yml)
+[![Pytest](https://github.com/kbrddestroyer/Python.Astro/actions/workflows/pytest.yml/badge.svg?branch=main&event=push)](https://github.com/kbrddestroyer/Python.Astro/actions/workflows/pytest.yml)
 
 ## About this repo
 
 Astro is python-based mathematical simulation of Newtonian gravity between multiple physical objects in 2D space.
 
-Overview:
+> Please, open an issue if you see any errors in this repository.
 
 ## Some basic physics 
 
@@ -35,14 +36,18 @@ $$
 
 ## Integration algorithms 
 
+$$
+\begin{align}
+\Delta r = \vec v_1\Delta t_1 + \vec v_2\Delta t_2 + ... + \vec v_n\Delta t_n \\
+\Delta r = \lim_{\Delta t \to 0} \sum^n_{i=1}v_i\Delta t_i \\
+\Delta r = \int^{t_1}_{t_0} v(t)dt \\
+\end{align}
+$$
+
 Now when we have current velocity, we need the way of shift precise calculation. 
 The most obvious way is to use Euler's integration, but then we'll face an issue, that this way is highly dependent on 
 simulation's refresh rate and ∆t between ticks. Fortunately, there's plenty of methods we can use instead.
 I've used [leapfrog algorithm](https://en.wikipedia.org/wiki/Leapfrog_integration).
-
-### How it works?
-
-
 
 ## Code logic
 
@@ -50,16 +55,12 @@ I've used [leapfrog algorithm](https://en.wikipedia.org/wiki/Leapfrog_integratio
 - Kinetic - object that has physical parameters, such as mass, acceleration and velocity. It's also used in visualization, converting own parameters to display self in pygame window. Also it can break into fragments if the external forces are much greater than it's own gravity.
 - Spawner can be added into unifile. Spawnables must contain no parameters in constructor.
 - Universe Utils file specifies global mathematical operations, such as distance calculating, force between two kinetics and universe-to-display convertations
-- Simulation - controls tickrate and Universe update rate. Parameters can be tweaked to achieve different simulation speed.
-
-Universe yses leapfrog integration for kinetic position and velocity calculations.
-
-> Graphics and visuals will be added soon
+- Simulation - controls tick rate and Universe update rate. Parameters can be tweaked to achieve different simulation speed.
 
 ## Installing
 
 1. Fetch the dependencies. `pip install -e .`
-2. Optionally install jupiter
+2. Optionally install Jupiter and Notebook with `pip install jupiter notebook`
 
 ## Usage
 
@@ -79,12 +80,14 @@ Asteriod spawn params can be changed inside kinetic module in `AsteroidSpawner` 
 
 Simply run `python src/main.py` to launch your `unifile.py` simulation
 
-## Testing
+### 3. Testing
 
 Jupiter notebook contains some basic computing and graphic plotting. It shows orbit parameters, speed and energy drift of a kinetic object.
 
-> Currently there's no unit tests. Even basic. This must be changed asap
-
 Codestyle checks are performed with `pylint`, simply run `pylint src`
 
-> This file will change soon. 
+### 4. Jupiter graphics
+
+- Launch Jupiter with `jupiter notebook` command
+- Open `README.ipynb` file
+- Launch the notebook
