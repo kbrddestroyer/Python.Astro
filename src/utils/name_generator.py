@@ -5,7 +5,7 @@ import random
 
 
 if typing.TYPE_CHECKING:
-    from physics.kinetic import Asteroid, Blackhole
+    from physics.kinetic import Asteroid
 
 
 ASTEROIDS = [
