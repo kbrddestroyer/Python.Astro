@@ -38,7 +38,8 @@ class Manager:
         self.__render_queue = []
         self.__remove_queue = []
 
-    def set_caption(self, cap : str):
+    @staticmethod
+    def set_caption(cap : str):
         pygame.display.set_caption(cap)
 
     def register(self, obj):

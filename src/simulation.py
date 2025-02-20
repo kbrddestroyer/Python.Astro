@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import typing
 
+from graphics import manager
+from physics import universe
 from utils.utility import Singleton
-from graphics.manager import Manager
-from physics.universe import Universe
 
 if typing.TYPE_CHECKING:
     from typing import Callable
@@ -24,8 +24,8 @@ class Simulation:
     def __init__(self):
         self.__running = True
 
-        self._manager = Manager()
-        self._universe = Universe()
+        self._manager = manager.Manager()
+        self._universe = universe.Universe()
 
     @property
     def manager(self):

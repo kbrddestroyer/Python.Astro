@@ -4,6 +4,8 @@ from typing import override, TYPE_CHECKING
 from copy import copy
 import math
 import random
+
+import astroid.nodes
 import pygame
 
 import simulation
@@ -195,11 +197,13 @@ class Kinetic(AstroKineticObject):
 
     @staticmethod
     def astro_to_gui_pos(astro_pos : Vector) -> Tuple[int, int]:
+        if astro_pos.magnitude == 0:
+            return (0, 0)
         return (astro_pos.normalized * astro_to_gui_distance(astro_pos.magnitude)).to_tuple()
 
     def try_scatter(self):
         if self.current_acceleration.magnitude:
-            if self.current_acceleration.magnitude / 3 > G_CONST * self.mass / (self.astro_radius ** 2):
+            if self.current_acceleration.magnitude / 30 > G_CONST * self.mass / (self.astro_radius ** 2):
                 self.scatter()
 
     def scatter(self):
