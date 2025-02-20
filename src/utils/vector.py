@@ -22,10 +22,15 @@ class Vector:
             return Vector(self.x + other.x, self.y + other.y)
         raise NotImplementedError(type(other))
 
+    def __eq__(self, other):
+        if isinstance(other, Vector):
+            return self.x == other.x and self.y == other.y
+        raise NotImplementedError(type(other))
+
     def __sub__(self, other):
         if isinstance(other, Vector):
             return Vector(self.x - other.x, self.y - other.y)
-        raise NotImplementedError
+        raise NotImplementedError(type(other))
 
     @staticmethod
     def vector_sum(v1 : Vector, v2 : Vector):

@@ -3,10 +3,10 @@ from __future__ import annotations
 import math
 
 from typing import TYPE_CHECKING
-from physics import kinetic
 from graphics import manager
 from utils.utility import Singleton
 from utils.vector import Vector
+from physics import kinetic
 
 from . import universe_utils
 
@@ -45,6 +45,7 @@ class Registry:
 
     def clear(self):
         self.__registry.clear()
+        self.__remove_queue.clear()
 
     def update(self):
         for obj in self.__remove_queue:
