@@ -74,7 +74,7 @@ Most physical parameters, such as unit size, can be tweaked inside universe util
 
 Asteriod spawn params can be changed inside kinetic module in `AsteroidSpawner` and `Asteroid` classes
 
-> Configuration will be moved to separate .ini or .py file soon
+> Global configuration is in config module
 
 ### 2. Running
 
