@@ -2,7 +2,7 @@ class Configuration:
     # region SIMULATION
 
     TIME_UNIT = 1.0
-    TIME_MULTIPLIER = 3
+    TIME_MULTIPLIER = 1
 
     DELTA_TIME = TIME_UNIT * TIME_MULTIPLIER
 
