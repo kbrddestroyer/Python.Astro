@@ -20,6 +20,7 @@ jobs:
             echo "Attempting to build the game"
             python -m pygbag --build $GITHUB_WORKSPACE/src/main.py
             echo "Successfully build the game and complied to WebAssembly"
+            mkdir build
 
     - name : "Upload to GitHub pages branch gh-pages"
       uses: JamesIves/github-pages-deploy-action@4.1.7
